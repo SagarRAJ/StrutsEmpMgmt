@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${Loggedin==null}">
+    <c:redirect url="landingPage.jsp"/>
+</c:if>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +22,7 @@
         <link rel="stylesheet" href="css/index.css">
         <title>Employee Management</title>
     </head>
-    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+    
     <!<!-- I want to check my session before showing any content to the user -->
 
 
@@ -138,7 +142,7 @@
                                     </td>
                                     <td> 
 
-                                        <a href='EditEmpolyee?employeeId="${emp.employeeId}"'>
+                                        <a href='EditEmpolyee?employeeId=${emp.employeeId}'>
                                             <button class="btn-dark">Edit</button>
                                         </a>
                                              <a href='DeleteEmployee?employeeId=<c:out value="${emp.employeeId}"> </c:out>'>

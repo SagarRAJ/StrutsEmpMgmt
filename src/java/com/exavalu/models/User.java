@@ -49,6 +49,7 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
     @Override
     public void setSession(Map<String, Object> session) {
         sessionMap = (SessionMap) session;
+        sessionMap.put("Loggedin", NONE);
     }
 
     public String doLogin() throws Exception {
@@ -60,11 +61,19 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
             ArrayList empList = EmployeeService.getInstance().getAllEmployees();
             sessionMap.put("EmpList", empList);
             System.out.println("returning Success from doLogin method");
+            sessionMap.put("Loggedin", this);
             result = "SUCCESS";
         } else {
             System.out.println("returning Failure from doLogin method");
+            sessionMap.put("Loggedin", null);
         }
 
+        return result;
+    }
+
+    public String doLogOut() {
+        String result = "SUCCESS";
+        sessionMap.clear();
         return result;
     }
 

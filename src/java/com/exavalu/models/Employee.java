@@ -225,14 +225,20 @@ public class Employee extends ActionSupport implements ApplicationAware, Session
     }
 
     public String doSearch() throws SQLException {
-        String result = "SUCCESS";
-        ArrayList EmpList = EmployeeService.getInstance().doSearch(this);
-        sessionMap.put("EmpList", EmpList);
+        String result = "FAILURE";
+
         ArrayList DeptList = DepartmentService.getAllDepartment();
         sessionMap.put("DeptList", DeptList);
         ArrayList RoleList = RoleService.getAllRole();
 
         sessionMap.put("RoleList", RoleList);
+        ArrayList EmpList = EmployeeService.getInstance().doSearch(this);
+
+        if (!EmpList.isEmpty()) {
+
+            sessionMap.put("EmpList", EmpList);
+            result = "SUCCESS";
+        }
 
         return result;
     }
@@ -243,8 +249,36 @@ public class Employee extends ActionSupport implements ApplicationAware, Session
         ArrayList DeptList = DepartmentService.getAllDepartment();
         sessionMap.put("DeptList", DeptList);
         ArrayList RoleList = RoleService.getAllRole();
-
         sessionMap.put("RoleList", RoleList);
+
+        ArrayList empList = EmployeeService.getInstance().getAllEmployees();
+        sessionMap.put("EmpList", empList);
+
+        return result;
+    }
+
+    public String doEdit() throws SQLException {
+        String result = "SUCCESS";
+        Employee emp = EmployeeService.getEmployee(this.employeeId);
+        sessionMap.put("Emp", emp);
+
+        ArrayList DeptList = DepartmentService.getAllDepartment();
+        sessionMap.put("DeptList", DeptList);
+        ArrayList RoleList = RoleService.getAllRole();
+        sessionMap.put("RoleList", RoleList);
+
+        ArrayList empList = EmployeeService.getInstance().getAllEmployees();
+        sessionMap.put("EmpList", empList);
+
+        return result;
+    }
+
+    public String doUpdate() throws SQLException {
+        String result = "FAILURE";
+        boolean update = EmployeeService.doUpdate(this);
+        if (update == true) {
+            result = "SUCCESS";
+        }
 
         return result;
     }

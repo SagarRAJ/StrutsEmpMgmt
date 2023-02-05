@@ -6,18 +6,29 @@
     <!-- Configuration for the default package. -->
     <package name="default" namespace="/" extends="struts-default">
         <action name="SearchEmployee" class="com.exavalu.models.Employee" method="doSearch">
-            <result name="SUCCESS">searchemployee.jsp</result>
-            <result name="FAILURE">employeeDetails.jsp</result>
+            <result name="SUCCESS">employeeDetails.jsp</result>
+            <result name="FAILURE">searchemployee.jsp</result>
         </action> 
          <action name="AddEmployee" class="com.exavalu.models.Employee" method="doAdd">
-            <result name="SUCCESS">addemployee.jsp</result>
-            <result name="FAILURE">employeeDetails.jsp</result>
+            <result name="SUCCESS">employeeDetails.jsp</result>
+            <result name="FAILURE">addemployee.jsp</result>
         </action>
         <action name="Login" class="com.exavalu.models.User" method="doLogin">
             <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">login.jsp</result>
         </action>
-
+         <action name="EditEmpolyee" class="com.exavalu.models.Employee" method="doEdit">
+            <result name="SUCCESS">editemployee.jsp</result>
+            <result name="FAILURE">employeeDetails.jsp</result>
+        </action>
+        <action name="UpdateEmployee" class="com.exavalu.models.Employee" method="doUpdate">
+            <result name="SUCCESS">menu.jsp</result>
+            <result name="FAILURE">employeeDetails.jsp</result>
+        </action>
+        <action name="Logout" class="com.exavalu.models.User" method="doLogOut">
+            <result name="SUCCESS">logout.jsp</result>
+            <result name="FAILURE">login.jsp</result>
+        </action>
               
     </package>
 </struts>

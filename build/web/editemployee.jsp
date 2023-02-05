@@ -4,6 +4,9 @@
 <%@page import="java.util.ArrayList"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:if test="${Loggedin==null}">
+    <c:redirect url="landingPage.jsp"/>
+</c:if>
 <!doctype html>
 <html lang="en">
     <head>
@@ -11,12 +14,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">        
         <title>Employee Management</title>      
         <link href="css/bootstrap.min.css" rel="stylesheet" >
+        
+                
+        <meta name="theme-color" content="#712cf9">
+
+        <!-- Custom styles for this template -->
+        <link href="css/header.css" rel="stylesheet">
+        <!--<link href="css/carousel.css" rel="stylesheet">-->
+        
         <link href="css/signin.css" rel="stylesheet">  
         <!-- Custom styles for this template -->
     </head>
     <body>
-        
+         
+       <jsp:include page="menu.jsp"></jsp:include>
             <main class="form-signin w-100 m-auto">
+                
 
             
             <c:set value="${Emp}" var="emp"/>

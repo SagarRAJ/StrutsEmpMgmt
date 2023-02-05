@@ -4,6 +4,9 @@
 <%--<%@page import="com.exavalu.entities.Employee"%>--%>
 <%--<%@page import="java.util.ArrayList"%>--%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:if test="${Loggedin==null}">
+    <c:redirect url="landingPage.jsp"/>
+</c:if>
            
 <!DOCTYPE html>
 <!--
@@ -169,7 +172,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </td>
                         <td> 
 
-                            <a href=EditEmployee?employeeId=${emp.getEmployeeId()}>
+                            <a href='EditEmpolyee?employeeId=${emp.employeeId}'>
                                             <button class="btn-dark">Edit</button>
                                         </a>
 

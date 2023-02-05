@@ -39,10 +39,11 @@ public class EmployeeService {
 
             preparedStatement.setString(1, emp.getFirstName());
             preparedStatement.setString(2, emp.getLastName());
-            preparedStatement.setString(3, emp.getAddress());
-            preparedStatement.setString(4, emp.getAge());
-            preparedStatement.setString(5, emp.getPhone());
-            preparedStatement.setString(6, emp.getGender());
+            preparedStatement.setString(3, emp.getPhone());
+            preparedStatement.setString(4, emp.getAddress());
+            preparedStatement.setString(5, emp.getGender());
+            preparedStatement.setString(6, emp.getAge());
+
             preparedStatement.setString(7, emp.getDepartmentName());
             preparedStatement.setString(8, emp.getRoleName());
             preparedStatement.setString(9, emp.getBasicSalary());
@@ -58,6 +59,69 @@ public class EmployeeService {
 
         return rs;
 
+    }
+
+    public static Employee getEmployee(String employeeId) throws SQLException {
+        Employee emp = new Employee();
+
+        Connection con = JDBCConnectionManager.getConnection();
+        String sql = "Select * from employees e, department d, roles r where e.departmentId=d.departmentId and e.roleId=r.rolesId having employeeId=?";
+
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setString(1, employeeId);
+        System.out.println("preparedStatement:" + preparedStatement);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+
+            emp.setEmployeeId(rs.getString("employeeId"));
+
+            emp.setFirstName(rs.getString("firstName"));
+            emp.setLastName(rs.getString("lastName"));
+            emp.setAddress(rs.getString("address"));
+            emp.setPhone(rs.getString("phone"));
+            emp.setGender(rs.getString("gender"));
+            emp.setAge(rs.getString("age"));
+            emp.setDepartmentName(rs.getString("departmentName"));
+            emp.setRoleName(rs.getString("RolesName"));
+            emp.setBasicSalary(rs.getString("basicSalary"));
+            emp.setCarAllaowance(rs.getString("carAllaowance"));
+
+        }
+        return emp;
+
+    }
+
+    public static boolean doUpdate(Employee emp) throws SQLException {
+
+        boolean result = false;
+        Connection con = JDBCConnectionManager.getConnection();
+        String sql = "UPDATE employeedb2.employees "
+                + "SET firstName = ? ,lastName = ? ,phone = ? ,address = ? ,gender = ? ,age = ? ,departmentId = ? ,roleId = ? ,basicSalary = ? ,carAllaowance = ?"
+                + "WHERE employeeId = ?";
+
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+        preparedStatement.setString(1, emp.getFirstName());
+        preparedStatement.setString(2, emp.getLastName());
+        preparedStatement.setString(3, emp.getPhone());
+        preparedStatement.setString(4, emp.getAddress());
+        preparedStatement.setString(5, emp.getGender());
+        preparedStatement.setString(6, emp.getAge());
+        preparedStatement.setInt(7, Integer.parseInt(emp.getDepartmentId()));
+        preparedStatement.setInt(8, Integer.parseInt(emp.getRoleId()));
+        preparedStatement.setDouble(9, Double.parseDouble(emp.getBasicSalary()));
+        preparedStatement.setDouble(10, Double.parseDouble(emp.getCarAllaowance()));
+
+        preparedStatement.setInt(11, Integer.parseInt(emp.getEmployeeId()));
+
+        System.out.println("SQL = " + preparedStatement);
+        int row = preparedStatement.executeUpdate();
+
+        if (row == 1) {
+            result = true;
+        }
+
+        return result;
     }
 
     public ArrayList doSearch(Employee emp) throws SQLException {
