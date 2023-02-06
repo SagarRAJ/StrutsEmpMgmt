@@ -143,7 +143,7 @@ public class EmployeeService {
         ArrayList empList = new ArrayList<>();
 
         Connection con = JDBCConnectionManager.getConnection();
-        String sql = "select * from employees e, department d, roles r where e.departmentId=d.departmentId and e.roleId=r.rolesId\n"
+        String sql = "select * from employees e, department d, roles r where e.departmentId=d.departmentId and e.roleId=r.rolesId and status=1\n"
                 + " having firstName like ?\n"
                 + " and lastName like ? \n"
                 + " and gender like ? \n"

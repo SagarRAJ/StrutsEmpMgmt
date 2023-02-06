@@ -33,6 +33,6 @@
             <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">editemployee.jsp</result>
         </action>
-              
+                  
     </package>
 </struts>
