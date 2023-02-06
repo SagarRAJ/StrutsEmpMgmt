@@ -29,6 +29,10 @@
             <result name="SUCCESS">logout.jsp</result>
             <result name="FAILURE">login.jsp</result>
         </action>
+        <action name="DeleteEmployee" class="com.exavalu.models.Employee" method="doDelete">
+            <result name="SUCCESS">employeeDetails.jsp</result>
+            <result name="FAILURE">editemployee.jsp</result>
+        </action>
               
     </package>
 </struts>

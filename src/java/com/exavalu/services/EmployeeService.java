@@ -124,6 +124,21 @@ public class EmployeeService {
         return result;
     }
 
+    public static boolean doDelete(String employeeId) throws SQLException {
+        boolean b = false;
+        Connection con = JDBCConnectionManager.getConnection();
+        String sql = "UPDATE employeedb2.employees SET status=0 where employeeId=?";
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setString(1, employeeId);
+        int row = preparedStatement.executeUpdate();
+
+        if (row == 1) {
+            b = true;
+        }
+
+        return b;
+    }
+
     public ArrayList doSearch(Employee emp) throws SQLException {
         ArrayList empList = new ArrayList<>();
 
@@ -174,7 +189,7 @@ public class EmployeeService {
     public ArrayList getAllEmployees() {
         ArrayList empList = new ArrayList();
         String sql = "select * from employees e, department d, roles r "
-                + "where e.departmentId=d.departmentId and e.roleId=r.rolesId ";
+                + "where e.departmentId=d.departmentId and e.roleId=r.rolesId and status=1 ";
         try {
             Connection con = JDBCConnectionManager.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);

@@ -145,7 +145,7 @@
                                         <a href='EditEmpolyee?employeeId=${emp.employeeId}'>
                                             <button class="btn-dark">Edit</button>
                                         </a>
-                                             <a href='DeleteEmployee?employeeId=<c:out value="${emp.employeeId}"> </c:out>'>
+                                             <a href='DeleteEmployee?employeeId=${emp.employeeId}'>
                                     <button class="btn-dark">Delete</button>
                                 </a>
 

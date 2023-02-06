@@ -283,4 +283,14 @@ public class Employee extends ActionSupport implements ApplicationAware, Session
         return result;
     }
 
+    public String doDelete() throws SQLException {
+        String result = "FAILURE";
+
+        boolean del = EmployeeService.doDelete(this.employeeId);
+        if (del == true) {
+            result = "SUCCESS";
+        }
+        return result;
+    }
+
 }
