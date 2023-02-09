@@ -5,10 +5,12 @@
 package com.exavalu.models;
 
 import com.exavalu.services.EmployeeService;
+import com.exavalu.services.LocationService;
 import com.exavalu.services.LoginService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import org.apache.struts2.dispatcher.ApplicationMap;
@@ -52,6 +54,42 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
         sessionMap.put("Loggedin", NONE);
     }
 
+    public String doPreSignUp() throws SQLException {
+        String result = "FAILURE";
+
+        ArrayList contList = LocationService.getAllCountry();
+        sessionMap.put("ContList", contList);
+        result = "SUCCESS";
+
+        if (this.countryCode != null) {
+            ArrayList stateList = LocationService.getAllState(this.countryCode);
+            sessionMap.put("StateList", stateList);
+            sessionMap.put("User", this);
+            result = "SUCCESS";
+        }
+        if (this.countryCode != null && this.stateCode != null) {
+            ArrayList districtList = LocationService.getAllProvince(this.stateCode);
+            sessionMap.put("DistrictList", districtList);
+            sessionMap.put("User", this);
+        }
+        if (this.countryCode != null && this.countryCode != "" && this.stateCode != null && this.stateCode != "" && this.provinceCode != null && this.provinceCode != "") {
+            boolean success = LoginService.getInstance().doSignUp(this);
+            if (success) {
+                ArrayList empList = EmployeeService.getInstance().getAllEmployees();
+                sessionMap.put("EmpList", empList);
+                System.out.println("returning Success from doLogin method");
+                sessionMap.put("Loggedin", this);
+                result = "FAILURE";
+            } else {
+                System.out.println("returning Failure from doLogin method");
+                sessionMap.put("Loggedin", null);
+            }
+        }
+
+        return result;
+
+    }
+
     public String doLogin() throws Exception {
         String result = "FAILURE";
 
@@ -89,14 +127,73 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
         return password;
     }
 
-    /**
-     * @return the employeeId
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getFirstname() {
+        return Firstname;
+    }
+
+    public void setFirstname(String Firstname) {
+        this.Firstname = Firstname;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String LastName) {
+        this.LastName = LastName;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
     private String email;
     private String password;
+    private String Firstname;
+    private String LastName;
+    private String countryCode;
+    private String provinceCode;
+    private String stateCode;
+    private String phoneNumber;
+    private String address;
 
 }

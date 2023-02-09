@@ -6,6 +6,7 @@ package com.exavalu.models;
 
 import com.exavalu.services.DepartmentService;
 import com.exavalu.services.EmployeeService;
+import com.exavalu.services.LocationService;
 import com.exavalu.services.RoleService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -53,6 +54,60 @@ public class Employee extends ActionSupport implements ApplicationAware, Session
     private String carAllaowance;
     private String departmentName;
     private String roleName;
+    private String countryName;
+    private String countryId;
+    private String stateName;
+    private String stateId;
+    private String districtName;
+    private String distrctId;
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getDistrctId() {
+        return distrctId;
+    }
+
+    public void setDistrctId(String distrctId) {
+        this.distrctId = distrctId;
+    }
 
     private int status;
 

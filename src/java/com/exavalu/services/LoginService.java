@@ -57,4 +57,30 @@ public class LoginService {
         return success;
     }
 
+    public boolean doSignUp(User user) throws SQLException {
+        Connection con = JDBCConnectionManager.getConnection();
+        String sql = "INSERT INTO employeedb2.users(emailAddress,password,firstName,lastName,countryCode,stateCode,provinceCode,phoneNumber,address)\n"
+                + "VALUES(?,? ,? ,? ,? ,? ,? ,?,? )";
+        PreparedStatement prepareStatement = con.prepareStatement(sql);
+        prepareStatement.setString(1, user.getEmail());
+        prepareStatement.setString(2, user.getPassword());
+
+        prepareStatement.setString(3, user.getFirstname());
+
+        prepareStatement.setString(4, user.getLastName());
+
+        prepareStatement.setString(5, user.getCountryCode());
+
+        prepareStatement.setString(6, user.getStateCode());
+
+        prepareStatement.setString(7, user.getProvinceCode());
+
+        prepareStatement.setString(8, user.getPhoneNumber());
+        prepareStatement.setString(9, user.getAddress());
+
+        int rs = prepareStatement.executeUpdate();
+        return true;
+
+    }
+
 }

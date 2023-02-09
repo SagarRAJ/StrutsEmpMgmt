@@ -33,6 +33,10 @@
             <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">editemployee.jsp</result>
         </action>
+        <action name="PreSignup" class="com.exavalu.models.User" method="doPreSignUp">
+            <result name="SUCCESS">signup.jsp</result>
+            <result name="FAILURE">login.jsp</result>
+        </action>
                   
     </package>
 </struts>
