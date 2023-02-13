@@ -37,8 +37,8 @@
             <result name="SUCCESS">signup.jsp</result>
             <result name="FAILURE">login.jsp</result>
         </action>
-         <action name="ApiCall" class="com.exavalu.models.Api" method="ap">
-            <result name="SUCCESS">signup.jsp</result>
+         <action name="ApiCall" class="com.exavalu.models.Api" method="doApiCall">
+            <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">login.jsp</result>
         </action>
                   

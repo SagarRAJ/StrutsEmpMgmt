@@ -19,7 +19,7 @@ public class ApiDbOperation {
     static boolean doInsert(Api[] obj) throws SQLException {
         Connection con = JDBCConnectionManager.getConnection();
 
-        for (Api ap : obj) {
+        for (Api data : obj) {
             int rs = 0;
             String sql = "INSERT INTO employeedb2.api\n"
                     + "(userId,\n"
@@ -32,10 +32,10 @@ public class ApiDbOperation {
                     + "? ,\n"
                     + "? )";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, ap.getUserId());
-            preparedStatement.setString(2, ap.getId());
-            preparedStatement.setString(3, ap.getTitle());
-            preparedStatement.setString(4, ap.getCompleted());
+            preparedStatement.setString(1, data.getUserId());
+            preparedStatement.setString(2, data.getId());
+            preparedStatement.setString(3, data.getTitle());
+            preparedStatement.setString(4, data.getCompleted());
             rs = preparedStatement.executeUpdate();
 
         }

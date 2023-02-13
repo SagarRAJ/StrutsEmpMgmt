@@ -6,6 +6,7 @@ package com.exavalu.models;
 
 import com.exavalu.services.ApiConsume;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  *
@@ -50,9 +51,14 @@ public class Api {
         this.completed = completed;
     }
 
-    public void ap() throws IOException {
+    public String doApiCall() throws IOException, InterruptedException, SQLException {
+        String result = "FAILURE";
 
-        ApiConsume.Api();
+        boolean res = ApiConsume.apiConsume();
+        if (res == true) {
+            result = "SUCCESS";
+        }
+        return result;
     }
 
 }

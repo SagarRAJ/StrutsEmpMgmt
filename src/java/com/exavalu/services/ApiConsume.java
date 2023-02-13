@@ -23,7 +23,7 @@ import org.apache.commons.io.IOUtils;
  */
 public class ApiConsume {
 
-    public static void Api() throws IOException, InterruptedException, SQLException {
+    public static boolean apiConsume() throws IOException, InterruptedException, SQLException {
 
         String apiUrl = "https://jsonplaceholder.typicode.com/todos/";
         HttpClient client = HttpClient.newBuilder().build();
@@ -38,10 +38,11 @@ public class ApiConsume {
 
         Gson gson = new Gson();
         Api[] obj = gson.fromJson(jsonString, Api[].class);
-        for (Api a : obj) {
-            System.out.println(a.getId());
+        for (Api data : obj) {
+            System.out.println(data.getId());
         }
         boolean t = ApiDbOperation.doInsert(obj);
+        return t;
 
     }
 
