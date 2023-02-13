@@ -72,7 +72,7 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
             sessionMap.put("DistrictList", districtList);
             sessionMap.put("User", this);
         }
-        if (this.countryCode != null && this.countryCode != "" && this.stateCode != null && this.stateCode != "" && this.provinceCode != null && this.provinceCode != "") {
+        if (this.countryCode != null && !"".equals(this.countryCode) && this.stateCode != null && this.stateCode != "" && this.provinceCode != null && this.provinceCode != "") {
             boolean success = LoginService.getInstance().doSignUp(this);
             if (success) {
                 ArrayList empList = EmployeeService.getInstance().getAllEmployees();

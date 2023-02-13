@@ -20,7 +20,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="employeeDetails.jsp" class="nav-link px-2 text-secondary">Home</a></li>
                     <li><a href="addemployee.jsp" class="nav-link px-2 text-white">Add Employee</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">Show Employee</a></li>
+                    <li><a href="ApiCall" class="nav-link px-2 text-white">Api consume</a></li>
                     <li><a href="SearchEmployee" class="nav-link px-2 text-white">Search Employee</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Update Employee</a></li>
                 </ul>
