@@ -312,6 +312,17 @@ public class Employee extends ActionSupport implements ApplicationAware, Session
         return result;
     }
 
+    public String doPreAdd() {
+        String result = "SUCCESS";
+
+        ArrayList DeptList = DepartmentService.getAllDepartment();
+        sessionMap.put("DeptList", DeptList);
+        ArrayList RoleList = RoleService.getAllRole();
+        sessionMap.put("RoleList", RoleList);
+
+        return result;
+    }
+
     public String doEdit() throws SQLException {
         String result = "SUCCESS";
         Employee emp = EmployeeService.getEmployee(this.employeeId);

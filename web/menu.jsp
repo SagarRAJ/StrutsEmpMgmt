@@ -19,7 +19,7 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="employeeDetails.jsp" class="nav-link px-2 text-secondary">Home</a></li>
-                    <li><a href="addemployee.jsp" class="nav-link px-2 text-white">Add Employee</a></li>
+                    <li><a href="PreAddEmployee" class="nav-link px-2 text-white">Add Employee</a></li>
                       <c:if test="${Loggedin!=null}">
                     <li><a href="ApiCall" class="nav-link px-2 text-white">Api consume</a></li>
                     </c:if>

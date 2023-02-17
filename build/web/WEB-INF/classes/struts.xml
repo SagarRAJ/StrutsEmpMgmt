@@ -13,6 +13,10 @@
             <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">addemployee.jsp</result>
         </action>
+        <action name="PreAddEmployee" class="com.exavalu.models.Employee" method="doPreAdd">
+            <result name="SUCCESS">addemployee.jsp</result>
+            <result name="FAILURE">addemployee.jsp</result>
+        </action>
         <action name="Login" class="com.exavalu.models.User" method="doLogin">
             <result name="SUCCESS">employeeDetails.jsp</result>
             <result name="FAILURE">login.jsp</result>
