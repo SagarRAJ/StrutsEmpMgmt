@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 public class LoginService {
 
     public static LoginService loginService = null;
+    private static final Logger log = Logger.getLogger(LoginService.class);
 
     private LoginService() {
     }
@@ -51,7 +54,11 @@ public class LoginService {
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = "SQL error occurred at " + timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
         }
 
         return success;
@@ -59,26 +66,34 @@ public class LoginService {
 
     public boolean doSignUp(User user) throws SQLException {
         Connection con = JDBCConnectionManager.getConnection();
-        String sql = "INSERT INTO employeedb2.users(emailAddress,password,firstName,lastName,countryCode,stateCode,provinceCode,phoneNumber,address)\n"
-                + "VALUES(?,? ,? ,? ,? ,? ,? ,?,? )";
-        PreparedStatement prepareStatement = con.prepareStatement(sql);
-        prepareStatement.setString(1, user.getEmail());
-        prepareStatement.setString(2, user.getPassword());
+        try {
+            String sql = "INSERT INTO employeedb2.users(emailAddress,password,firstName,lastName,countryCode,stateCode,provinceCode,phoneNumber,address)\n"
+                    + "VALUES(?,? ,? ,? ,? ,? ,? ,?,? )";
+            PreparedStatement prepareStatement = con.prepareStatement(sql);
+            prepareStatement.setString(1, user.getEmail());
+            prepareStatement.setString(2, user.getPassword());
 
-        prepareStatement.setString(3, user.getFirstname());
+            prepareStatement.setString(3, user.getFirstname());
 
-        prepareStatement.setString(4, user.getLastName());
+            prepareStatement.setString(4, user.getLastName());
 
-        prepareStatement.setString(5, user.getCountryCode());
+            prepareStatement.setString(5, user.getCountryCode());
 
-        prepareStatement.setString(6, user.getStateCode());
+            prepareStatement.setString(6, user.getStateCode());
 
-        prepareStatement.setString(7, user.getProvinceCode());
+            prepareStatement.setString(7, user.getProvinceCode());
 
-        prepareStatement.setString(8, user.getPhoneNumber());
-        prepareStatement.setString(9, user.getAddress());
+            prepareStatement.setString(8, user.getPhoneNumber());
+            prepareStatement.setString(9, user.getAddress());
 
-        int rs = prepareStatement.executeUpdate();
+            int rs = prepareStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
+        }
         return true;
 
     }

@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -27,8 +29,9 @@ public class EmployeeService {
             return employeeService;
         }
     }
+    public static final Logger log = Logger.getLogger(EmployeeService.class);
 
-    public static int doAdd(Employee emp) throws SQLException {
+    public static int doAdd(Employee emp) {
 
         Connection con = JDBCConnectionManager.getConnection();
         String sql = "INSERT INTO employeedb2.employees(firstName,lastName,phone,address,gender,age,departmentId,roleId,basicSalary,carAllaowance) VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
@@ -54,6 +57,12 @@ public class EmployeeService {
 
         } catch (SQLException ex) {
 
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
+
         }
         System.out.println(rs);
 
@@ -61,61 +70,81 @@ public class EmployeeService {
 
     }
 
-    public static Employee getEmployee(String employeeId) throws SQLException {
+    public static Employee getEmployee(String employeeId) {
         Employee emp = new Employee();
 
         Connection con = JDBCConnectionManager.getConnection();
         String sql = "Select * from employees e, department d, roles r where e.departmentId=d.departmentId and e.roleId=r.rolesId having employeeId=?";
 
-        PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, employeeId);
-        System.out.println("preparedStatement:" + preparedStatement);
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, employeeId);
+            System.out.println("preparedStatement:" + preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
 
-            emp.setEmployeeId(rs.getString("employeeId"));
+                emp.setEmployeeId(rs.getString("employeeId"));
 
-            emp.setFirstName(rs.getString("firstName"));
-            emp.setLastName(rs.getString("lastName"));
-            emp.setAddress(rs.getString("address"));
-            emp.setPhone(rs.getString("phone"));
-            emp.setGender(rs.getString("gender"));
-            emp.setAge(rs.getString("age"));
-            emp.setDepartmentName(rs.getString("departmentName"));
-            emp.setRoleName(rs.getString("RolesName"));
-            emp.setBasicSalary(rs.getString("basicSalary"));
-            emp.setCarAllaowance(rs.getString("carAllaowance"));
+                emp.setFirstName(rs.getString("firstName"));
+                emp.setLastName(rs.getString("lastName"));
+                emp.setAddress(rs.getString("address"));
+                emp.setPhone(rs.getString("phone"));
+                emp.setGender(rs.getString("gender"));
+                emp.setAge(rs.getString("age"));
+                emp.setDepartmentName(rs.getString("departmentName"));
+                emp.setRoleName(rs.getString("RolesName"));
+                emp.setBasicSalary(rs.getString("basicSalary"));
+                emp.setCarAllaowance(rs.getString("carAllaowance"));
+
+            }
+
+        } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
 
         }
         return emp;
 
     }
 
-    public static boolean doUpdate(Employee emp) throws SQLException {
+    public static boolean doUpdate(Employee emp) {
 
         boolean result = false;
+        int row = 0;
         Connection con = JDBCConnectionManager.getConnection();
         String sql = "UPDATE employeedb2.employees "
                 + "SET firstName = ? ,lastName = ? ,phone = ? ,address = ? ,gender = ? ,age = ? ,departmentId = ? ,roleId = ? ,basicSalary = ? ,carAllaowance = ?"
                 + "WHERE employeeId = ?";
 
-        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
 
-        preparedStatement.setString(1, emp.getFirstName());
-        preparedStatement.setString(2, emp.getLastName());
-        preparedStatement.setString(3, emp.getPhone());
-        preparedStatement.setString(4, emp.getAddress());
-        preparedStatement.setString(5, emp.getGender());
-        preparedStatement.setString(6, emp.getAge());
-        preparedStatement.setInt(7, Integer.parseInt(emp.getDepartmentId()));
-        preparedStatement.setInt(8, Integer.parseInt(emp.getRoleId()));
-        preparedStatement.setDouble(9, Double.parseDouble(emp.getBasicSalary()));
-        preparedStatement.setDouble(10, Double.parseDouble(emp.getCarAllaowance()));
+            preparedStatement.setString(1, emp.getFirstName());
+            preparedStatement.setString(2, emp.getLastName());
+            preparedStatement.setString(3, emp.getPhone());
+            preparedStatement.setString(4, emp.getAddress());
+            preparedStatement.setString(5, emp.getGender());
+            preparedStatement.setString(6, emp.getAge());
+            preparedStatement.setInt(7, Integer.parseInt(emp.getDepartmentId()));
+            preparedStatement.setInt(8, Integer.parseInt(emp.getRoleId()));
+            preparedStatement.setDouble(9, Double.parseDouble(emp.getBasicSalary()));
+            preparedStatement.setDouble(10, Double.parseDouble(emp.getCarAllaowance()));
 
-        preparedStatement.setInt(11, Integer.parseInt(emp.getEmployeeId()));
+            preparedStatement.setInt(11, Integer.parseInt(emp.getEmployeeId()));
 
-        System.out.println("SQL = " + preparedStatement);
-        int row = preparedStatement.executeUpdate();
+            System.out.println("SQL = " + preparedStatement);
+            row = preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
+        }
 
         if (row == 1) {
             result = true;
@@ -124,13 +153,22 @@ public class EmployeeService {
         return result;
     }
 
-    public static boolean doDelete(String employeeId) throws SQLException {
+    public static boolean doDelete(String employeeId) {
         boolean b = false;
+        int row = 0;
         Connection con = JDBCConnectionManager.getConnection();
         String sql = "UPDATE employeedb2.employees SET status=0 where employeeId=?";
-        PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, employeeId);
-        int row = preparedStatement.executeUpdate();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, employeeId);
+            row = preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
+        }
 
         if (row == 1) {
             b = true;
@@ -139,7 +177,7 @@ public class EmployeeService {
         return b;
     }
 
-    public ArrayList doSearch(Employee emp) throws SQLException {
+    public ArrayList doSearch(Employee emp) {
         ArrayList empList = new ArrayList<>();
 
         Connection con = JDBCConnectionManager.getConnection();
@@ -150,31 +188,40 @@ public class EmployeeService {
                 + " and departmentName like ? \n"
                 + " and rolesName like ?";
 
-        PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, emp.getFirstName() + "%");
-        preparedStatement.setString(2, emp.getLastName() + "%");
-        preparedStatement.setString(3, emp.getGender() + "%");
-        preparedStatement.setString(4, emp.getDepartmentName() + "%");
-        preparedStatement.setString(5, emp.getRoleName() + "%");
-        System.out.println("Prepared statement = " + preparedStatement);
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, emp.getFirstName() + "%");
+            preparedStatement.setString(2, emp.getLastName() + "%");
+            preparedStatement.setString(3, emp.getGender() + "%");
+            preparedStatement.setString(4, emp.getDepartmentName() + "%");
+            preparedStatement.setString(5, emp.getRoleName() + "%");
+            System.out.println("Prepared statement = " + preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
 
-            Employee employee = new Employee();
-            employee.setEmployeeId(rs.getString("employeeId"));
+                Employee employee = new Employee();
+                employee.setEmployeeId(rs.getString("employeeId"));
 
-            employee.setFirstName(rs.getString("firstName"));
-            employee.setLastName(rs.getString("lastName"));
-            employee.setAddress(rs.getString("address"));
-            employee.setPhone(rs.getString("phone"));
-            employee.setGender(rs.getString("gender"));
-            employee.setAge(rs.getString("age"));
-            employee.setDepartmentName(rs.getString("departmentName"));
-            employee.setRoleName(rs.getString("RolesName"));
-            employee.setBasicSalary(rs.getString("basicSalary"));
-            employee.setCarAllaowance(rs.getString("carAllaowance"));
+                employee.setFirstName(rs.getString("firstName"));
+                employee.setLastName(rs.getString("lastName"));
+                employee.setAddress(rs.getString("address"));
+                employee.setPhone(rs.getString("phone"));
+                employee.setGender(rs.getString("gender"));
+                employee.setAge(rs.getString("age"));
+                employee.setDepartmentName(rs.getString("departmentName"));
+                employee.setRoleName(rs.getString("RolesName"));
+                employee.setBasicSalary(rs.getString("basicSalary"));
+                employee.setCarAllaowance(rs.getString("carAllaowance"));
 
-            empList.add(employee);
+                empList.add(employee);
+            }
+        } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
+
         }
 //            Iterator itr=empList.iterator();
 //            while(itr.hasNext()){
@@ -216,7 +263,11 @@ public class EmployeeService {
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
         }
         System.err.println("Total rows:" + empList.size());
         return empList;

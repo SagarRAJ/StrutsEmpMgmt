@@ -5,18 +5,23 @@
 package com.exavalu.services;
 
 import com.exavalu.models.Role;
+import static com.exavalu.services.EmployeeService.log;
 import com.exavalu.utils.JDBCConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Win10
  */
 public class RoleService {
+
+    private static final Logger log = Logger.getLogger(RoleService.class);
 
     public static ArrayList getAllRole() {
         ArrayList roleList = new ArrayList();
@@ -34,6 +39,11 @@ public class RoleService {
             }
 
         } catch (SQLException ex) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
 
         }
 

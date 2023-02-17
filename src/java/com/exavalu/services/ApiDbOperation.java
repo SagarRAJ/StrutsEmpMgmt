@@ -9,6 +9,8 @@ import com.exavalu.utils.JDBCConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,7 +18,7 @@ import java.sql.SQLException;
  */
 public class ApiDbOperation {
 
-    static boolean doInsert(Api[] obj) throws SQLException {
+    static boolean doInsert(Api[] obj) {
         Connection con = JDBCConnectionManager.getConnection();
 
         for (Api data : obj) {
@@ -31,12 +33,21 @@ public class ApiDbOperation {
                     + "? ,\n"
                     + "? ,\n"
                     + "? )";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, data.getUserId());
-            preparedStatement.setString(2, data.getId());
-            preparedStatement.setString(3, data.getTitle());
-            preparedStatement.setString(4, data.getCompleted());
-            rs = preparedStatement.executeUpdate();
+            try {
+                PreparedStatement preparedStatement = con.prepareStatement(sql);
+                preparedStatement.setString(1, data.getUserId());
+                preparedStatement.setString(2, data.getId());
+                preparedStatement.setString(3, data.getTitle());
+                preparedStatement.setString(4, data.getCompleted());
+                rs = preparedStatement.executeUpdate();
+            } catch (SQLException ex) {
+                Logger log = Logger.getLogger(ApiDbOperation.class);
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+                // Construct the error message with date and time
+                String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+                log.error(errorMessage);
+            }
 
         }
         return true;

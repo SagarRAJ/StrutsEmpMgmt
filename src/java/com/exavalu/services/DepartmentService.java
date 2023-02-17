@@ -10,9 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -44,7 +44,12 @@ public class DepartmentService {
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger log = Logger.getLogger(DepartmentService.class);
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            // Construct the error message with date and time
+            String errorMessage = timestamp.toString() + ": " + ex.getMessage();
+            log.error(errorMessage);
         }
 
         return deptList;

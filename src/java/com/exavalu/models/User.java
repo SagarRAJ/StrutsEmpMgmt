@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.ApplicationMap;
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.ApplicationAware;
@@ -23,6 +24,8 @@ import org.apache.struts2.interceptor.SessionAware;
  * @author Win10
  */
 public class User extends ActionSupport implements ApplicationAware, SessionAware, Serializable {
+
+    private static final Logger log = Logger.getLogger(User.class.getName());
 
     public SessionMap<String, Object> getSessionMap() {
         return sessionMap;
@@ -102,6 +105,8 @@ public class User extends ActionSupport implements ApplicationAware, SessionAwar
             sessionMap.put("Loggedin", this);
             result = "SUCCESS";
         } else {
+
+            log.error("Helllo World");
             System.out.println("returning Failure from doLogin method");
             sessionMap.put("Loggedin", null);
         }
